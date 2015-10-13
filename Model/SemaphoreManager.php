@@ -15,7 +15,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
     /**
      * Acquire semaphore and return handle
      *
-     * @param string  $srcKey
+     * @param mixed $srcKey
      * @param string|null $path
      * @param integer|null $ttl time to leave in seconds
      *
@@ -39,7 +39,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
                 }
             }
             $this->logDebug('Start', $path, __FUNCTION__, $srcKey);
-            $result = $this->parentAcquire($srcKey, $ttl);
+            $result = $this->parentAcquire($srcKey, $path, $ttl);
 
         } catch(SemaphoreAcquireException $e){
             $this->acquireException($e->getMessage(), $srcKey);
@@ -57,14 +57,15 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
     }
 
     /**
-     * @param $srcKey
+     * @param mixed $srcKey
+     * @param string $path
      * @param integer|null $maxLockTime
      *
      * @return string
      *
      * @throws \ErrorException
      */
-    protected function parentAcquire($srcKey, $maxLockTime = null)
+    protected function parentAcquire($srcKey, $path = null, $maxLockTime = null)
     {
         $key = $this->getKey($srcKey);
         $tryCount = $this->tryCount;
@@ -76,10 +77,19 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
             sleep($this->sleepTime);
         }
 
+        $keyValue = sprintf('%s %s', $path, $this->getDataToString($srcKey));
         if (!$ok) {
             throw new \ErrorException(sprintf('Can\'t acquire lock for %s', $key));
+
+        } elseif(array_key_exists($key, $this->handlers)){
+            if(is_array($this->handlers[$key])){
+                array_push($this->handlers[$key], $keyValue);
+            } else {
+                $this->handlers[$key] = $keyValue;
+            }
+
         } else {
-            $this->handlers[$key] = $this->getDataToString($srcKey);
+            $this->handlers[$key] = $keyValue;
         }
 
         return $key;
@@ -88,7 +98,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
     /**
      * Release semaphore
      *
-     * @param array $srcKey
+     * @param mixed $srcKey
      * @param string|null $path
      *
      * @return void
@@ -121,7 +131,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
     }
 
     /**
-     * @param $srcKey
+     * @param mixed $srcKey
      *
      * @return bool
      *
@@ -132,8 +142,17 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
         $key = $this->getKey($srcKey);
         if (!array_key_exists($key, $this->handlers)) {
             throw new \LogicException(sprintf('Call ::acquire(\'%s\') first', $key));
+
+        } elseif($this->isExceptionRepeatBlockKey && is_array($this->handlers[$key])){
+            if(count($this->handlers[$key]) >= 2){
+                array_pop($this->handlers[$key]);
+            } else {
+                unset($this->handlers[$key]);
+            }
+
+        } else {
+            unset($this->handlers[$key]);
         }
-        unset($this->handlers[$key]);
         return $this->adapter->releaseEx($key, getmypid());
     }
 
