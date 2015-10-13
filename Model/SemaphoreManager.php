@@ -17,13 +17,13 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
      *
      * @param mixed $srcKey
      * @param string|null $path
-     * @param integer|null $ttl time to leave in seconds
+     * @param integer|null $maxLockTime time to leave in seconds
      *
      * @return mixed handle
      *
      * @throws SemaphoreAcquireException
      */
-    public function acquire($srcKey, $path = null, $ttl = null)
+    public function acquire($srcKey, $path = null, $maxLockTime = null)
     {
         $key = null;
         $result = null;
@@ -35,11 +35,11 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
                     $this->acquireException('Попытка повторного блокирования ключа', $srcKey);
                 } else {
                     $this->logger->warning(sprintf('[%d] %s->%s: Попытка повторного блокирования ключа: %s', getmypid(), $path, __FUNCTION__, $this->getDataToString($srcKey)));
-                    $this->adapter->expire($key, $ttl);
+                    $this->adapter->expire($key, $maxLockTime);
                 }
             }
             $this->logDebug('Start', $path, __FUNCTION__, $srcKey);
-            $result = $this->parentAcquire($srcKey, $path, $ttl);
+            $result = $this->parentAcquire($srcKey, $path, $maxLockTime);
 
         } catch(SemaphoreAcquireException $e){
             $this->acquireException($e->getMessage(), $srcKey);
@@ -52,7 +52,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
             $this->logException($e, $path, __FUNCTION__, $srcKey);
             $this->acquireException('Ошибка', $srcKey);
         }
-        $this->logDebug(sprintf('Success (ttl %d s.)', $ttl), $path, __FUNCTION__, $srcKey);
+        $this->logDebug(sprintf('Success (ttl %d s.)', $maxLockTime), $path, __FUNCTION__, $srcKey);
         return $result;
     }
 

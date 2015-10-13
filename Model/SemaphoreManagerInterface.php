@@ -15,13 +15,13 @@ interface SemaphoreManagerInterface extends \Millwright\Semaphore\Model\Semaphor
      *
      * @param string $srcKey
      * @param string|null $path
-     * @param integer|null $ttl time to leave in seconds
+     * @param integer|null $maxLockTime time to leave in seconds
      *
      * @return mixed handle
      *
      * @throws SemaphoreAcquireException
      */
-    public function acquire($srcKey, $path = null, $ttl = null);
+    public function acquire($srcKey, $path = null, $maxLockTime = null);
 
     /**
      * Release semaphore
