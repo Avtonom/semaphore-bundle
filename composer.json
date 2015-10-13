@@ -1,0 +1,30 @@
+{
+  "name": "avtonom/semaphore-bundle",
+  "type": "symfony-bundle",
+  "description": "A generic locking Symfony bundle for PHP, that uses named locks for semaphore acquire and release, to guarantee atomicity",
+  "keywords": ["Symfony2", "bundle", "semaphore", "locking", "lock", "atomicity", "atom", "acquire", "release", "redis", "memcached", "sem", "flock"],
+  "homepage": "https://github.com/Avtonom/semaphore-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anton U",
+      "email": "avtonomspb@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.2",
+    "symfony/dependency-injection": "~2.3|3.*",
+    "symfony/monolog-bundle": "2.*",
+    "zerkalica/semaphore": "dev-master"
+  },
+  "autoload": {
+    "psr-0": { "Avtonom\\SemaphoreBundle": "" }
+  },
+  "target-dir": "Avtonom/SemaphoreBundle",
+  "minimum-stability": "dev",
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.1.x-dev"
+    }
+  }
+}

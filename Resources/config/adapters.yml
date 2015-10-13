@@ -1,0 +1,33 @@
+parameters:
+    avtonom_semaphore.adapter_redis_client: ~
+    avtonom_semaphore.adapter_memcached_client: ~
+
+services:
+    millwright_semaphore.adapter.apc:
+        class: Millwright\Semaphore\Adapter\ApcAdapter
+
+    millwright_semaphore.adapter.sem: # http://php.net/manual/en/ref.sem.php
+        class: Millwright\Semaphore\Adapter\SemAdapter
+
+    millwright_semaphore.adapter.flock: # Symfony/Component/Filesystem/LockHandler
+        class: Millwright\Semaphore\Adapter\FlockAdapter
+        arguments:
+            - %kernel.cache_dir%
+
+    millwright_semaphore.adapter.redis:
+        class: Millwright\Semaphore\Adapter\RedisAdapter
+        public: false
+        arguments:
+            - '%avtonom_semaphore.adapter_redis_client%'
+
+    avtonom_semaphore.adapter.redis:
+        class: Avtonom\SemaphoreBundle\Adapter\RedisAdapter
+        public: false
+        arguments:
+            - '%avtonom_semaphore.adapter_redis_client%'
+
+    millwright_semaphore.adapter.memcached:
+        class: Millwright\Semaphore\Adapter\MemcachedAdapter
+        public: false
+        arguments:
+            - '%avtonom_semaphore.adapter_memcached_client%'
