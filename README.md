@@ -42,10 +42,10 @@ Maybe in the future:
 
 Run the following in your project root, assuming you have composer set up for your project
 ```sh
-composer.phar require avtonom/semaphore-bundle ~1.2
+composer.phar require avtonom/semaphore-bundle ~1.1
 ```
 
-Switching `~1.2` for the most recent tag.
+Switching `~1.1` for the most recent tag.
 
 Add the bundle to app/AppKernel.php
 
