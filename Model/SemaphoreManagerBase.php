@@ -150,7 +150,7 @@ abstract class SemaphoreManagerBase
      */
     protected function logError($message, $path, $functionName, $srcKey)
     {
-        $this->logger->error(sprintf('[%d] %s->%s: %s. Key: %s', getmypid(), $path, $functionName, $message, $this->getDataToString($srcKey)));
+        $this->logger->error(sprintf('[%d] %s->%s: %s. Key: %s %s', getmypid(), $path, $functionName, $message, $this->getKey($srcKey), $this->getDataToString($srcKey)));
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class SemaphoreManagerBase
      */
     protected function logException(\Exception $e, $path, $functionName, $srcKey)
     {
-        $this->logger->error(sprintf('[%d] %s->%s: %s: %s. Key: %s', getmypid(), $path, $functionName, get_class($e), $e->getMessage(), $this->getDataToString($srcKey)));
+        $this->logger->error(sprintf('[%d] %s->%s: %s: %s. Key: %s %s', getmypid(), $path, $functionName, get_class($e), $e->getMessage(), $this->getKey($srcKey), $this->getDataToString($srcKey)));
     }
 
     /**
