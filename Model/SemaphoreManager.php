@@ -22,6 +22,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
      * @return mixed handle
      *
      * @throws SemaphoreAcquireException
+     * @throws \Exception
      */
     public function acquire($srcKey, $path = null, $maxLockTime = null)
     {
@@ -50,7 +51,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
 
         } catch(\Exception $e){
             $this->logException($e, $path, __FUNCTION__, $srcKey);
-            $this->acquireException('Ошибка', $srcKey);
+            throw $e;
         }
         $this->logDebug(sprintf('Success (ttl %d s.)', $maxLockTime), $path, __FUNCTION__, $srcKey);
         return $result;
