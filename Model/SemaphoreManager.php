@@ -126,7 +126,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
 
         } catch(\Exception $e){
             $this->logException($e, $path, __FUNCTION__, $srcKey);
-            $this->releaseException('Ошибка', $srcKey);
+            throw $e;
         }
         $this->logDebug('Success', $path, __FUNCTION__, $srcKey);
     }
