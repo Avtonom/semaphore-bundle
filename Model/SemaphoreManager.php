@@ -168,7 +168,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
     public function __destruct()
     {
         if(!empty($this->handlers)){
-            $this->logError('Handlers is not empty', null, __FUNCTION__, $this->handlers);
+            $this->logger->error(sprintf('[%d] %s: %s. Key: %s', getmypid(), __FUNCTION__, 'Handlers is not empty',  $this->getDataToString($this->handlers)));
         }
     }
 }
