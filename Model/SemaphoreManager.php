@@ -75,7 +75,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
 
         while ($tryCount > 0 && !$ok = $this->acquireFactory($key, $maxLockTime)) {
             $tryCount--;
-            sleep($this->sleepTime);
+            usleep($this->sleepTime);
         }
 
         $keyValue = sprintf('%s %s', $path, $this->getDataToString($srcKey));

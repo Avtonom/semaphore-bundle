@@ -1,6 +1,6 @@
 parameters:
-    avtonom_semaphore.try_count: 240 # try count, if lock not acquired. 240 count * 0,5 sec (sleep wait) = 120 sec wait
-    avtonom_semaphore.sleep_time: 0,5 # sleep time in seconds, if lock not acquired
+    avtonom_semaphore.try_count: 240 # try count, if lock not acquired. 240 count * 1/2 seconds (sleep wait) = 120 sec wait
+    avtonom_semaphore.sleep_time: 500000 # sleep time in microseconds, if lock not acquired. 1.000.000 microseconds = 1 seconds
     avtonom_semaphore.max_lock_time: 60 # ttl - max_lock_time
     avtonom_semaphore.prefix: 'lock_' # prefix to key
 
