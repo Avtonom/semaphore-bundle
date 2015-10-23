@@ -9,6 +9,8 @@ Locking is useful for controlling access to resources in a multi-process or dist
 
 The idea is that the actual locking mechanism can be implemented in any way you like, in order to fit your technology stack.
 
+Page bundle: https://github.com/Avtonom/semaphore-bundle
+
 ##  Support adapters
 * redis
 * memcached
@@ -41,8 +43,11 @@ Maybe in the future:
 #### To Install
 
 Run the following in your project root, assuming you have composer set up for your project
+
 ```sh
+
 composer.phar require avtonom/semaphore-bundle ~1.1
+
 ```
 
 Switching `~1.1` for the most recent tag.
@@ -50,11 +55,13 @@ Switching `~1.1` for the most recent tag.
 Add the bundle to app/AppKernel.php
 
 ```php
+
 $bundles(
     ...
        new Avtonom\SemaphoreBundle\AvtonomSemaphoreBundle(),
     ...
 );
+
 ```
 
 Configuration options (config.yaml):
@@ -71,25 +78,26 @@ snc_redis:
 avtonom_semaphore:
     adapter_redis_client: snc_redis.semaphore
     key_storage.class: Application\Avtonom\SemaphoreBundle\SemaphoreKeyStorage
-# default
-#    adapter: avtonom_semaphore.adapter.redis
-#    manager_class: Avtonom\SemaphoreBundle\Model\SemaphoreManager
-#    is_exception_repeat_block_key: true # Generate an error when you try to re-key block in the same process.
-#    use_extended_methods: true
+    # default
+    #    adapter: avtonom_semaphore.adapter.redis
+    #    manager_class: Avtonom\SemaphoreBundle\Model\SemaphoreManager
+    #    is_exception_repeat_block_key: true # Generate an error when you try to re-key block in the same process.
+    #    use_extended_methods: true
 
 ```
+
 Configuration options (parameters.yaml):
 
 ``` yaml
 
 parameters:
-# default
-#    avtonom_semaphore.try_count: 240 # try count, if lock not acquired. 240 count * 1/2 sec (sleep wait) = 120 sec wait
-#    avtonom_semaphore.sleep_time: 500000 # sleep time in microseconds, if lock not acquired. 1.000.000 microseconds = 1 seconds
-#    avtonom_semaphore.max_lock_time: 60 # ttl - max lock time
-#    avtonom_semaphore.prefix: 'lock_'
-
-#### To Use
+    # default
+    #    avtonom_semaphore.try_count: 240 # try count, if lock not acquired. 240 count * 1/2 sec (sleep wait) = 120 sec wait
+    #    avtonom_semaphore.sleep_time: 500000 # sleep time in microseconds, if lock not acquired. 1.000.000 microseconds = 1 seconds
+    #    avtonom_semaphore.max_lock_time: 60 # ttl - max lock time
+    #    avtonom_semaphore.prefix: 'lock_'
+    
+```
 
 ``` php
 
@@ -113,6 +121,7 @@ $this->lockRelease($lockKey, __METHOD__);
 Create Application\Avtonom\SemaphoreBundle\KeyStorage class:
 
 ``` php
+
 <?php
 
 namespace Application\Avtonom\SemaphoreBundle;
