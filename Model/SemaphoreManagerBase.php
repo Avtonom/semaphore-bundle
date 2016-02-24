@@ -64,7 +64,7 @@ abstract class SemaphoreManagerBase
         $this->logger                = $logger;
 
         if($this->useExtendedMethods && !$adapter instanceof \Avtonom\SemaphoreBundle\Model\AdapterInterface){
-            throw new SemaphoreException('ss');
+            throw new SemaphoreException('Adapter not implements \Avtonom\SemaphoreBundle\Model\AdapterInterface');
         }
     }
 
