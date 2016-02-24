@@ -22,6 +22,7 @@ class AvtonomSemaphoreExtension extends Extension
 
         $container->setParameter('avtonom_semaphore.key_storage_class', $config['key_storage_class']);
         $container->setParameter('avtonom_semaphore.adapter_redis_client', $config['adapter_redis_client']);
+        $container->setParameter('avtonom_semaphore.mode', $config['mode']);
         $container->setParameter('avtonom_semaphore.manager_class', $config['manager_class']);
         $container->setParameter('avtonom_semaphore.adapter', $config['adapter']);
         $container->setParameter('avtonom_semaphore.is_exception_repeat_block_key', $config['is_exception_repeat_block_key']);

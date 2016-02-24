@@ -33,3 +33,4 @@ services:
             - %avtonom_semaphore.use_extended_methods%
             - %avtonom_semaphore.prefix%
             - @avtonom_semaphore.logger
+            - %avtonom_semaphore.mode%

@@ -28,6 +28,7 @@ abstract class SemaphoreManagerBase
     protected $isExceptionRepeatBlockKey;
     protected $useExtendedMethods;
     protected $prefix;
+    protected $mode;
 
     protected $handlers = array();
 
@@ -48,10 +49,11 @@ abstract class SemaphoreManagerBase
      * @param bool             $useExtendedMethods
      * @param string           $prefix    lock key namespace
      * @param LoggerInterface  $logger
+     * @param string           $mode
      *
      * @throws SemaphoreException
      */
-    public function __construct(AdapterInterface $adapter, SemaphoreKeyStorageInterface $keyStorage, $tryCount, $sleepTime, $maxLockTime, $isExceptionRepeatBlockKey, $useExtendedMethods, $prefix, LoggerInterface $logger)
+    public function __construct(AdapterInterface $adapter, SemaphoreKeyStorageInterface $keyStorage, $tryCount, $sleepTime, $maxLockTime, $isExceptionRepeatBlockKey, $useExtendedMethods, $prefix, LoggerInterface $logger, $mode)
     {
         $this->adapter               = $adapter;
         $this->keyStorage            = $keyStorage;
@@ -62,6 +64,7 @@ abstract class SemaphoreManagerBase
         $this->useExtendedMethods    = $useExtendedMethods;
         $this->prefix                = $prefix;
         $this->logger                = $logger;
+        $this->mode                  = $mode;
 
         if($this->useExtendedMethods && !$adapter instanceof \Avtonom\SemaphoreBundle\Model\AdapterInterface){
             throw new SemaphoreException('Adapter not implements \Avtonom\SemaphoreBundle\Model\AdapterInterface');

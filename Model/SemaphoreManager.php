@@ -30,6 +30,10 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
         $result = null;
         try {
             $key = $this->getKey($srcKey);
+            if($this->isDemoMode()){
+                $this->logDebug(sprintf('Success (ttl %d s.)', $maxLockTime), $path, __FUNCTION__, $srcKey);
+                return $key;
+            }
             if(array_key_exists($key, $this->handlers)){
                 if($this->isExceptionRepeatBlockKey){
                     $this->logError('Попытка повторного блокирования ключа', $path, __FUNCTION__, $srcKey);
@@ -105,12 +109,16 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
      * @return void
      *
      * @throws SemaphoreReleaseException
+     * @throws \Exception
      */
     public function release($srcKey, $path = null)
     {
         try {
             $this->logDebug('Start', $path, __FUNCTION__, $srcKey);
-
+            if($this->isDemoMode()){
+                $this->logDebug('Success', $path, __FUNCTION__, $srcKey);
+                return;
+            }
             $res = $this->parentRelease($srcKey);
             if($res === false){
                 $this->logError('Освобождение несуществующего ключа', $path, __FUNCTION__, $srcKey);
@@ -170,5 +178,14 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
         if(!empty($this->handlers)){
             $this->logger->error(sprintf('[%d] %s: %s. Key: %s', getmypid(), __FUNCTION__, 'Handlers is not empty',  $this->getDataToString($this->handlers)));
         }
+    }
+
+    protected function isDemoMode()
+    {
+        $res = ($this->mode == 'demo');
+        if($res){
+            $this->logger->addDebug('Use demo mode');
+        }
+        return $res;
     }
 }

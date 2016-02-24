@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('adapter')->defaultValue('avtonom_semaphore.adapter.redis')->end()
                 ->scalarNode('adapter_redis_client')->defaultValue(null)->end()
+                ->scalarNode('mode')->defaultValue(null)->end()
 
                 ->scalarNode('key_storage_class')->defaultValue('Avtonom\SemaphoreBundle\Model\SemaphoreKeyStorageBase')->end()
 
