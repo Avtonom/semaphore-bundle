@@ -11,7 +11,7 @@ services:
 
     avtonom_semaphore.logger_handler:
         public: false
-        class: Monolog\Handler\StreamHandler
+        class: Monolog\Handler\RotatingFileHandler
         arguments: [%kernel.logs_dir%/%kernel.environment%.semaphore.log]
 
     avtonom_semaphore.logger:
