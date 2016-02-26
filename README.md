@@ -27,6 +27,7 @@ Page bundle: https://github.com/Avtonom/semaphore-bundle
 * Logging operations with all the necessary information on a specific channel in monolog (channel: semaphore)
 * Select the class for the lock manager (SemaphoreManager)
 * Select the object class contains a list of key locks (KeyStorage)
+* Demo mode - keeping all logging but does not execute set and validates the key.
 * Setting parameters such as:
 * - Number of attempts to acquire a lock
 * - Waiting time between attempts to acquire a lock
@@ -78,6 +79,7 @@ snc_redis:
 avtonom_semaphore:
     adapter_redis_client: snc_redis.semaphore
     key_storage.class: Application\Avtonom\SemaphoreBundle\SemaphoreKeyStorage
+    #mode: demo # activation of the demo mode - keeping all logging but does not execute set and validates the key. 
     # default
     #    adapter: avtonom_semaphore.adapter.redis
     #    manager_class: Avtonom\SemaphoreBundle\Model\SemaphoreManager
