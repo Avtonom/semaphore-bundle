@@ -36,10 +36,10 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
             }
             if(array_key_exists($key, $this->handlers)){
                 if($this->isExceptionRepeatBlockKey){
-                    $this->logError('Попытка повторного блокирования ключа', $path, __FUNCTION__, $srcKey);
-                    $this->acquireException('Попытка повторного блокирования ключа', $srcKey);
+                    $this->logError('Retrying to acquire key-lock', $path, __FUNCTION__, $srcKey);
+                    $this->acquireException('Retrying to acquire key-lock', $srcKey);
                 } else {
-                    $this->logger->warning(sprintf('[%d] %s->%s: Попытка повторного блокирования ключа: %s', getmypid(), $path, __FUNCTION__, $this->getDataToString($srcKey)));
+                    $this->logger->warning(sprintf('[%d] %s->%s: Retrying to acquire key-lock: %s', getmypid(), $path, __FUNCTION__, $this->getDataToString($srcKey)));
                     $this->adapter->expire($key, $maxLockTime);
                 }
             }
@@ -51,7 +51,7 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
 
         } catch(\ErrorException $e){
             $this->logException($e, $path, __FUNCTION__, $srcKey);
-            $this->acquireException('Истекло время ожидания блокировки ключа', $srcKey);
+            $this->acquireException('Key lock time expired', $srcKey);
 
         } catch(\Exception $e){
             $this->logException($e, $path, __FUNCTION__, $srcKey);
@@ -121,16 +121,16 @@ class SemaphoreManager extends SemaphoreManagerBase implements SemaphoreManagerI
             }
             $res = $this->parentRelease($srcKey);
             if($res === false){
-                $this->logError('Освобождение несуществующего ключа', $path, __FUNCTION__, $srcKey);
-                $this->releaseException('Освобождение несуществующего ключа', $srcKey);
+                $this->logError('Trying to release a non existent key', $path, __FUNCTION__, $srcKey);
+                $this->releaseException('Trying to release a non existent key', $srcKey);
             }
         } catch(\LogicException $e) {
             $this->logException($e, $path, __FUNCTION__, $srcKey);
-            $this->releaseException('Повторная попытка освобождения ключа', $srcKey);
+            $this->releaseException('Retrying to release key-lock', $srcKey);
 
         } catch(\UnexpectedValueException $e) {
             $this->logException($e, $path, __FUNCTION__, $srcKey);
-            $this->releaseException('Освобождение несуществующего ключа', $srcKey);
+            $this->releaseException('Trying to release a non existent key', $srcKey);
 
         } catch(\Exception $e){
             $this->logException($e, $path, __FUNCTION__, $srcKey);
