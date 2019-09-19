@@ -7,30 +7,30 @@ parameters:
 services:
     avtonom_semaphore.key_storage:
         public: false
-        class: %avtonom_semaphore.key_storage_class%
+        class: "%avtonom_semaphore.key_storage_class%"
 
     avtonom_semaphore.logger_handler:
         public: false
         class: Monolog\Handler\RotatingFileHandler
-        arguments: [%kernel.logs_dir%/%kernel.environment%.semaphore.log]
+        arguments: ["%kernel.logs_dir%/%kernel.environment%.semaphore.log"]
 
     avtonom_semaphore.logger:
         public: false
         class: Symfony\Bridge\Monolog\Logger
         arguments: [semaphore]
         calls:
-            - [pushHandler, [@avtonom_semaphore.logger_handler]]
+            - [pushHandler, ["@avtonom_semaphore.logger_handler"]]
 
     avtonom_semaphore.manager:
-        class: %avtonom_semaphore.manager_class%
+        class: "%avtonom_semaphore.manager_class%"
         arguments:
-            - %avtonom_semaphore.adapter%
-            - @avtonom_semaphore.key_storage
-            - %avtonom_semaphore.try_count%
-            - %avtonom_semaphore.sleep_time%
-            - %avtonom_semaphore.max_lock_time%
-            - %avtonom_semaphore.is_exception_repeat_block_key%
-            - %avtonom_semaphore.use_extended_methods%
-            - %avtonom_semaphore.prefix%
-            - @avtonom_semaphore.logger
-            - %avtonom_semaphore.mode%
+            - "%avtonom_semaphore.adapter%"
+            - "@avtonom_semaphore.key_storage"
+            - "%avtonom_semaphore.try_count%"
+            - "%avtonom_semaphore.sleep_time%"
+            - "%avtonom_semaphore.max_lock_time%"
+            - "%avtonom_semaphore.is_exception_repeat_block_key%"
+            - "%avtonom_semaphore.use_extended_methods%"
+            - "%avtonom_semaphore.prefix%"
+            - '@avtonom_semaphore.logger'
+            - '%avtonom_semaphore.mode%'
