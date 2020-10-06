@@ -17,7 +17,7 @@ services:
     avtonom_semaphore.logger:
         public: false
         class: Symfony\Bridge\Monolog\Logger
-        arguments: [semaphore]
+        arguments: ["semaphore"]
         calls:
             - [pushHandler, ["@avtonom_semaphore.logger_handler"]]
 
