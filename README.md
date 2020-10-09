@@ -47,11 +47,11 @@ Run the following in your project root, assuming you have composer set up for yo
 
 ```sh
 
-composer.phar require avtonom/semaphore-bundle ~1.1
-
+composer.phar require avtonom/semaphore-bundle ^1.4
+composer require snc/redis-bundle
 ```
 
-Switching `~1.1` for the most recent tag.
+Switching `^1.4` for the most recent tag.
 
 Add the bundle to app/AppKernel.php
 
@@ -60,6 +60,7 @@ Add the bundle to app/AppKernel.php
 $bundles(
     ...
        new Avtonom\SemaphoreBundle\AvtonomSemaphoreBundle(),
+       new Snc\RedisBundle\SncRedisBundle(),
     ...
 );
 
