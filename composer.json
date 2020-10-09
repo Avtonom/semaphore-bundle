@@ -28,6 +28,7 @@
     }
   },
   "suggest": {
-    "snc/redis-bundle": "bundle integrates Predis and PhpRedis"
+    "snc/redis-bundle": "bundle integrates Predis and PhpRedis",
+    "predis/predis": "key_storage_classPredis"
   }
 }

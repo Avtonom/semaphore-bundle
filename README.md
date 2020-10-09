@@ -79,7 +79,7 @@ snc_redis:
 
 avtonom_semaphore:
     adapter_redis_client: snc_redis.semaphore
-    key_storage.class: Application\Avtonom\SemaphoreBundle\SemaphoreKeyStorage
+    key_storage_class: Application\Avtonom\SemaphoreBundle\SemaphoreKeyStorage
     #mode: demo # activation of the demo mode - keeping all logging but does not execute set and validates the key. 
     # default
     #    adapter: avtonom_semaphore.adapter.redis
